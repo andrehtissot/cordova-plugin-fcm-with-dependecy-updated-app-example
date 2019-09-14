@@ -28,12 +28,14 @@ Check the wiki for more.
 6. To define the TARGET, you might use a topic or the device token.
 * For all, ios or android devices (`/topics/all`, `/topics/ios`, `/topics/android`). As they are automatically subscribed to those.
 * Or grab the firebase token, presented on app start:
+
 ![Device Token is presented on device start](https://user-images.githubusercontent.com/1174345/64908538-dfbaa100-d701-11e9-87de-5bf564c14040.png)
 7. Run:
 ```bash
 FB_SERVER_KEY="your firebase server key" TARGET="the device's firebase token or topic" php tools/notify-both.php
 ```
 8. And look at your device:
+
 ![Device showing notifications](https://user-images.githubusercontent.com/1174345/64908707-e9450880-d703-11e9-802e-9ba20f8a0839.png)
 
 
