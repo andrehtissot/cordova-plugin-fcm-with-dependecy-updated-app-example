@@ -4,7 +4,7 @@
 [![GitHub issues](https://img.shields.io/github/issues/andrehtissot/cordova-plugin-fcm-with-dependecy-updated-app-example.svg)](https://github.com/andrehtissot/cordova-plugin-fcm-with-dependecy-updated-app-example/issues)
 [![GitHub forks](https://img.shields.io/github/forks/andrehtissot/cordova-plugin-fcm-with-dependecy-updated-app-example.svg)](https://github.com/andrehtissot/cordova-plugin-fcm-with-dependecy-updated-app-example/network)
 [![GitHub stars](https://img.shields.io/github/stars/andrehtissot/cordova-plugin-fcm-with-dependecy-updated-app-example.svg)](https://github.com/andrehtissot/cordova-plugin-fcm-with-dependecy-updated-app-example/stargazers)
-[![Known Vulnerabilities](https://snyk.io/test/github/andrehtissot/cordova-plugin-fcm-with-dependecy-updated-app-example/badge.svg?targetFile=app-example/package.json)](https://snyk.io/test/github/andrehtissot/cordova-plugin-fcm-with-dependecy-updated-app-example?targetFile=app-example/package.json)
+[![Known Vulnerabilities](https://snyk.io//test/github/andrehtissot/cordova-plugin-fcm-with-dependecy-updated-app-example/badge.svg?targetFile=package.json)](https://snyk.io//test/github/andrehtissot/cordova-plugin-fcm-with-dependecy-updated-app-example?targetFile=package.json)
 
 Simple cordova application using [cordova-plugin-fcm-with-dependecy-updated](https://github.com/andrehtissot/cordova-plugin-fcm-with-dependecy-updated).
 
