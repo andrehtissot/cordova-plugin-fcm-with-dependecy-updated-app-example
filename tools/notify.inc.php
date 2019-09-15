@@ -25,6 +25,7 @@ function notify($message) {
   $now = time();
 
   $message['to'] = $target;
+  $message['priority'] = 'high';
 
   $headers = [
     "Authorization:key=$serverKey",
