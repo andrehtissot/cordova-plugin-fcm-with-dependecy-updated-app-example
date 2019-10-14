@@ -42,10 +42,10 @@ function trySomeTimes(func, onSuccess, onFailure) {
 function setupOnTokenRefresh() {
   FCMPlugin.onTokenRefresh(
     function(token) {
-      addToLog("<p>Token refreshed to " + token + "</p>");
+      addToLog("<p>FCM Token refreshed to " + token + "</p>");
     },
     function(error) {
-      addToLog("<p>Error on checking permission: " + error + "</p>");
+      addToLog("<p>Error on refreshing FCM Token: " + error + "</p>");
     }
   );
 }
@@ -56,16 +56,26 @@ function setupOnNotification() {
   });
 }
 
-function getToken() {
+function logFCMToken() {
   trySomeTimes(
     FCMPlugin.getToken,
     function(token) {
-      addToLog("<p>Started listening as " + token + "</p>");
-      setupOnTokenRefresh();
-      setupOnNotification();
+      addToLog("<p>Started listening FCM as " + token + "</p>");
     },
     function(error) {
-      addToLog("<p>Error on listening for token: " + error + "</p>");
+      addToLog("<p>Error on listening for FCM token: " + error + "</p>");
+    }
+  );
+}
+
+function logAPNSToken() {
+  trySomeTimes(
+    FCMPlugin.getAPNSToken,
+    function(token) {
+      addToLog("<p>Started listening APNS as " + token + "</p>");
+    },
+    function(error) {
+      addToLog("<p>Error on listening for APNS token: " + error + "</p>");
     }
   );
 }
@@ -75,7 +85,10 @@ function setupListeners() {
     FCMPlugin.hasPermission,
     function(hasPermission) {
       if (hasPermission) {
-        getToken();
+        logFCMToken();
+        logAPNSToken();
+        setupOnTokenRefresh();
+        setupOnNotification();
         return;
       }
       addToLog("<p>Push permission was not given to this application</p>");
