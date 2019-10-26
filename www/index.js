@@ -21,14 +21,15 @@ function addToLog(log) {
     document.getElementById("notification-logs").innerHTML;
 }
 
-function trySomeTimes(func, onSuccess, onFailure) {
-  var tries = 100;
-  var interval = setInterval(function() {
+function trySomeTimes(func, onSuccess, onFailure, customTries) {
+  var tries = typeof customTries === "undefined" ? 100 : customTries;
+  var interval = setTimeout(function() {
     func(
       function(result) {
-        if ((result !== null && result !== "") || --tries < 0) {
-          clearInterval(interval);
+        if ((result !== null && result !== "") || tries < 0) {
           onSuccess(result);
+        } else {
+          trySomeTimes(func, onSuccess, onFailure, tries - 1);
         }
       },
       function(e) {
@@ -69,6 +70,9 @@ function logFCMToken() {
 }
 
 function logAPNSToken() {
+  if (cordova.platformId !== "ios") {
+    return;
+  }
   trySomeTimes(
     FCMPlugin.getAPNSToken,
     function(token) {
@@ -77,6 +81,16 @@ function logAPNSToken() {
     function(error) {
       addToLog("<p>Error on listening for APNS token: " + error + "</p>");
     }
+  );
+}
+
+function setupClearAllNotificationsButton() {
+  document.getElementById("clear-all-notifications").addEventListener(
+    "click",
+    function() {
+      FCMPlugin.clearAllNotifications();
+    },
+    false
   );
 }
 
@@ -89,6 +103,7 @@ function setupListeners() {
         logAPNSToken();
         setupOnTokenRefresh();
         setupOnNotification();
+        setupClearAllNotificationsButton();
         return;
       }
       addToLog("<p>Push permission was not given to this application</p>");
