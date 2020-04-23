@@ -23,16 +23,16 @@ function addToLog(log) {
 
 function trySomeTimes(func, onSuccess, onFailure, customTries) {
   var tries = typeof customTries === "undefined" ? 100 : customTries;
-  var interval = setTimeout(function() {
+  var interval = setTimeout(function () {
     func(
-      function(result) {
+      function (result) {
         if ((result !== null && result !== "") || tries < 0) {
           onSuccess(result);
         } else {
           trySomeTimes(func, onSuccess, onFailure, tries - 1);
         }
       },
-      function(e) {
+      function (e) {
         clearInterval(interval);
         onFailure(e);
       }
@@ -42,17 +42,17 @@ function trySomeTimes(func, onSuccess, onFailure, customTries) {
 
 function setupOnTokenRefresh() {
   FCMPlugin.onTokenRefresh(
-    function(token) {
+    function (token) {
       addToLog("<p>FCM Token refreshed to " + token + "</p>");
     },
-    function(error) {
+    function (error) {
       addToLog("<p>Error on refreshing FCM Token: " + error + "</p>");
     }
   );
 }
 
 function setupOnNotification() {
-  FCMPlugin.onNotification(function(data) {
+  FCMPlugin.onNotification(function (data) {
     addToLog("<pre>" + JSON.stringify(data, null, 2) + "</pre>");
   });
 }
@@ -60,10 +60,10 @@ function setupOnNotification() {
 function logFCMToken() {
   trySomeTimes(
     FCMPlugin.getToken,
-    function(token) {
+    function (token) {
       addToLog("<p>Started listening FCM as " + token + "</p>");
     },
-    function(error) {
+    function (error) {
       addToLog("<p>Error on listening for FCM token: " + error + "</p>");
     }
   );
@@ -75,10 +75,10 @@ function logAPNSToken() {
   }
   trySomeTimes(
     FCMPlugin.getAPNSToken,
-    function(token) {
+    function (token) {
       addToLog("<p>Started listening APNS as " + token + "</p>");
     },
-    function(error) {
+    function (error) {
       addToLog("<p>Error on listening for APNS token: " + error + "</p>");
     }
   );
@@ -87,7 +87,7 @@ function logAPNSToken() {
 function setupClearAllNotificationsButton() {
   document.getElementById("clear-all-notifications").addEventListener(
     "click",
-    function() {
+    function () {
       FCMPlugin.clearAllNotifications();
     },
     false
@@ -95,9 +95,12 @@ function setupClearAllNotificationsButton() {
 }
 
 function setupListeners() {
+  if (FCMPlugin.requestPushPermissionIOS) {
+    FCMPlugin.requestPushPermissionIOS();
+  }
   trySomeTimes(
     FCMPlugin.hasPermission,
-    function(hasPermission) {
+    function (hasPermission) {
       if (hasPermission) {
         logFCMToken();
         logAPNSToken();
@@ -108,7 +111,7 @@ function setupListeners() {
       }
       addToLog("<p>Push permission was not given to this application</p>");
     },
-    function(error) {
+    function (error) {
       addToLog("<p>Error on checking permission: " + error + "</p>");
     }
   );
