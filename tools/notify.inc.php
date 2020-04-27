@@ -25,6 +25,7 @@ function notify($message) {
   $now = time();
 
   $message['to'] = $target;
+  // $message['registration_ids'] = [$target];
   $message['priority'] = 'high';
 
   $headers = [

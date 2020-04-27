@@ -5,9 +5,8 @@ notify([
   "notification" => [
     "title" => "Notification title",
     "body" => "Notification body",
-    "sound" => "default",
     "click_action" => "FCM_PLUGIN_ACTIVITY",
-    "icon" => "fcm_push_icon"
+    // "android_channel_id" => "sound_alert6"
   ],
   "data" => [
     "param1" => "value1",

@@ -24,6 +24,10 @@ function addToLog(log) {
 function trySomeTimes(func, onSuccess, onFailure, customTries) {
   var tries = typeof customTries === "undefined" ? 100 : customTries;
   var interval = setTimeout(function () {
+    if (typeof func !== "function") {
+      onSuccess("Unavailable");
+      return;
+    }
     func(
       function (result) {
         if ((result !== null && result !== "") || tries < 0) {
@@ -96,7 +100,21 @@ function setupClearAllNotificationsButton() {
 
 function setupListeners() {
   if (FCMPlugin.requestPushPermissionIOS) {
-    FCMPlugin.requestPushPermissionIOS();
+    setTimeout(function () {
+      FCMPlugin.requestPushPermissionIOS();
+    }, 3000);
+  }
+  if (FCMPlugin.createNotificationChannelAndroid) {
+    FCMPlugin.createNotificationChannelAndroid({
+      id: "sound_alert6",
+      name: "Sound Alert6",
+      // description: "Useless",
+      importance: "high",
+      // visibility: "public",
+      sound: "elet_mp3",
+      // lights: false,
+      // vibration: false,
+    });
   }
   trySomeTimes(
     FCMPlugin.hasPermission,
