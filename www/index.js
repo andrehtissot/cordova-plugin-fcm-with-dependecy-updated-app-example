@@ -77,8 +77,7 @@ function logAPNSToken() {
   if (cordova.platformId !== "ios") {
     return;
   }
-  trySomeTimes(
-    FCMPlugin.getAPNSToken,
+  FCMPlugin.getAPNSToken(
     function (token) {
       addToLog("<p>Started listening APNS as " + token + "</p>");
     },
@@ -98,13 +97,23 @@ function setupClearAllNotificationsButton() {
   );
 }
 
+function waitForPermission(callback) {
+  FCMPlugin.requestPushPermissionIOS(
+    function (didIt) {
+      if (didIt) {
+        callback();
+      } else {
+        addToLog("<p>Push permission was not given to this application</p>");
+      }
+    },
+    function (error) {
+      addToLog("<p>Error on checking permission: " + error + "</p>");
+    }
+  );
+}
+
 function setupListeners() {
-  if (FCMPlugin.requestPushPermissionIOS) {
-    setTimeout(function () {
-      FCMPlugin.requestPushPermissionIOS();
-    }, 3000);
-  }
-  if (FCMPlugin.createNotificationChannelAndroid) {
+  waitForPermission(function () {
     FCMPlugin.createNotificationChannelAndroid({
       id: "sound_alert6",
       name: "Sound Alert6",
@@ -115,24 +124,12 @@ function setupListeners() {
       // lights: false,
       // vibration: false,
     });
-  }
-  trySomeTimes(
-    FCMPlugin.hasPermission,
-    function (hasPermission) {
-      if (hasPermission) {
-        logFCMToken();
-        logAPNSToken();
-        setupOnTokenRefresh();
-        setupOnNotification();
-        setupClearAllNotificationsButton();
-        return;
-      }
-      addToLog("<p>Push permission was not given to this application</p>");
-    },
-    function (error) {
-      addToLog("<p>Error on checking permission: " + error + "</p>");
-    }
-  );
+    logFCMToken();
+    logAPNSToken();
+    setupOnTokenRefresh();
+    setupOnNotification();
+    setupClearAllNotificationsButton();
+  });
 }
 
 document.addEventListener("deviceready", setupListeners, false);
