@@ -28,8 +28,9 @@
   },
   "dependencies": {
     "cordova-android": "^8.1.0",
-    "cordova-ios": "^5.0.1",
-    "cordova-plugin-fcm-with-dependecy-updated": "^4.1.0"
+    "cordova-ios": "^5.1.1",
+    "cordova-plugin-fcm-with-dependecy-updated": "file:../cordova-plugin-fcm-with-dependecy-updated",
+    "promise-polyfill": "8.1.3"
   },
   "devDependencies": {
     "cordova-plugin-whitelist": "^1.3.4"
@@ -38,10 +39,11 @@
     "plugins": {
       "cordova-plugin-whitelist": {},
       "cordova-plugin-fcm-with-dependecy-updated": {
-        "FCM_CORE_VERSION": "16.0.9",
-        "FCM_VERSION": "18.0.0",
-        "GRADLE_TOOLS_VERSION": "3.5.0",
-        "GOOGLE_SERVICES_VERSION": "4.2.0"
+        "FCM_VERSION": "19.0.0",
+        "GRADLE_TOOLS_VERSION": "3.5.3",
+        "GOOGLE_SERVICES_VERSION": "4.3.3",
+        "SUPPORT_LIBRARY_VERSION": "28.0.0",
+        "ANDROID_DEFAULT_NOTIFICATION_ICON": "@mipmap/ic_launcher"
       }
     },
     "platforms": [

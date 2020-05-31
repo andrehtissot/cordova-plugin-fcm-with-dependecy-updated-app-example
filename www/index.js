@@ -21,49 +21,58 @@ function addToLog(log) {
     document.getElementById("notification-logs").innerHTML;
 }
 
-function trySomeTimes(func, onSuccess, onFailure, customTries) {
+function trySomeTimes(asyncFunc, onSuccess, onFailure, customTries) {
   var tries = typeof customTries === "undefined" ? 100 : customTries;
   var interval = setTimeout(function () {
-    if (typeof func !== "function") {
+    if (typeof asyncFunc !== "function") {
       onSuccess("Unavailable");
       return;
     }
-    func(
-      function (result) {
+    asyncFunc()
+      .then(function (result) {
         if ((result !== null && result !== "") || tries < 0) {
           onSuccess(result);
         } else {
-          trySomeTimes(func, onSuccess, onFailure, tries - 1);
+          trySomeTimes(asyncFunc, onSuccess, onFailure, tries - 1);
         }
-      },
-      function (e) {
+      })
+      .catch(function (e) {
         clearInterval(interval);
         onFailure(e);
-      }
-    );
+      });
   }, 100);
 }
 
 function setupOnTokenRefresh() {
-  FCMPlugin.onTokenRefresh(
-    function (token) {
-      addToLog("<p>FCM Token refreshed to " + token + "</p>");
+  FCM.events.addEventListener(
+    "tokenRefresh",
+    function (data) {
+      addToLog("<p>FCM Token refreshed to " + data.detail + "</p>");
     },
-    function (error) {
-      addToLog("<p>Error on refreshing FCM Token: " + error + "</p>");
-    }
+    false
   );
 }
 
 function setupOnNotification() {
-  FCMPlugin.onNotification(function (data) {
-    addToLog("<pre>" + JSON.stringify(data, null, 2) + "</pre>");
-  });
+  var onNotificationHandler = function (payload) {
+    if (!payload) {
+      return;
+    }
+    addToLog("<pre>" + JSON.stringify(payload, null, 2) + "</pre>");
+  };
+  FCM.events.addEventListener(
+    "notification",
+    function (data) {
+      onNotificationHandler(data.detail);
+    },
+    false
+  );
+  FCM.getInitialPushPayload().then(onNotificationHandler);
 }
 
 function logFCMToken() {
   trySomeTimes(
-    FCMPlugin.getToken,
+    FCM.getToken,
     function (token) {
       addToLog("<p>Started listening FCM as " + token + "</p>");
     },
@@ -77,7 +86,7 @@ function logAPNSToken() {
   if (cordova.platformId !== "ios") {
     return;
   }
-  FCMPlugin.getAPNSToken(
+  FCM.getAPNSToken(
     function (token) {
       addToLog("<p>Started listening APNS as " + token + "</p>");
     },
@@ -91,30 +100,29 @@ function setupClearAllNotificationsButton() {
   document.getElementById("clear-all-notifications").addEventListener(
     "click",
     function () {
-      FCMPlugin.clearAllNotifications();
+      FCM.clearAllNotifications();
     },
     false
   );
 }
 
 function waitForPermission(callback) {
-  FCMPlugin.requestPushPermissionIOS(
-    function (didIt) {
+  FCM.requestPushPermission()
+    .then(function (didIt) {
       if (didIt) {
         callback();
       } else {
         addToLog("<p>Push permission was not given to this application</p>");
       }
-    },
-    function (error) {
+    })
+    .catch(function (error) {
       addToLog("<p>Error on checking permission: " + error + "</p>");
-    }
-  );
+    });
 }
 
 function setupListeners() {
   waitForPermission(function () {
-    FCMPlugin.createNotificationChannelAndroid({
+    FCM.createNotificationChannel({
       id: "sound_alert6",
       name: "Sound Alert6",
       // description: "Useless",
