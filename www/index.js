@@ -44,7 +44,7 @@ function trySomeTimes(asyncFunc, onSuccess, onFailure, customTries) {
 }
 
 function setupOnTokenRefresh() {
-  FCM.events.addEventListener(
+  FCM.eventTarget.addEventListener(
     "tokenRefresh",
     function (data) {
       addToLog("<p>FCM Token refreshed to " + data.detail + "</p>");
@@ -60,7 +60,7 @@ function setupOnNotification() {
     }
     addToLog("<pre>" + JSON.stringify(payload, null, 2) + "</pre>");
   };
-  FCM.events.addEventListener(
+  FCM.eventTarget.addEventListener(
     "notification",
     function (data) {
       onNotificationHandler(data.detail);
