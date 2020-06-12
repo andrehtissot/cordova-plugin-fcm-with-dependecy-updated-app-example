@@ -7,7 +7,9 @@
   "main": "index.js",
   "scripts": {
     "start": "cordova run android",
-    "postinstall": "cp node_modules/promise-polyfill/dist/polyfill.min.js www"
+    "postinstall": "cp node_modules/promise-polyfill/dist/polyfill.min.js www",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "keywords": [
     "ecosystem:cordova",
@@ -31,7 +33,8 @@
     "cordova-android": "^8.1.0",
     "cordova-ios": "^6.0.0",
     "cordova-plugin-fcm-with-dependecy-updated": "^7.0.0-beta.2",
-    "promise-polyfill": "8.1.3"
+    "promise-polyfill": "8.1.3",
+    "snyk": "^1.339.2"
   },
   "devDependencies": {
     "cordova-plugin-whitelist": "^1.3.4"
@@ -51,5 +54,6 @@
       "android",
       "ios"
     ]
-  }
+  },
+  "snyk": true
 }
