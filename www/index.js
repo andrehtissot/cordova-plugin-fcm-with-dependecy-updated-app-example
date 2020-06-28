@@ -54,20 +54,20 @@ function setupOnTokenRefresh() {
 }
 
 function setupOnNotification() {
-  var onNotificationHandler = function (payload) {
-    if (!payload) {
-      return;
-    }
-    addToLog("<pre>" + JSON.stringify(payload, null, 2) + "</pre>");
-  };
   FCM.eventTarget.addEventListener(
     "notification",
     function (data) {
-      onNotificationHandler(data.detail);
+      addToLog("<pre>" + JSON.stringify(data.detail, null, 2) + "</pre>");
     },
     false
   );
-  FCM.getInitialPushPayload().then(onNotificationHandler);
+  FCM.getInitialPushPayload().then((payload) => {
+    addToLog(
+      "<p>Initial Payload</p><pre>" +
+        JSON.stringify(payload, null, 2) +
+        "</pre>"
+    );
+  });
 }
 
 function logFCMToken() {
