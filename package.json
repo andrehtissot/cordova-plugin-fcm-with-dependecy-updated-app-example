@@ -28,7 +28,7 @@
     "url": "https://github.com/andrehtissot/cordova-plugin-fcm-with-dependecy-updated-app-example"
   },
   "dependencies": {
-    "cordova-android": "^8.1.0",
+    "cordova-android": "^9.0.0",
     "cordova-ios": "^6.1.0",
     "cordova-plugin-fcm-with-dependecy-updated": "^7.0.1",
     "promise-polyfill": "8.1.3"
