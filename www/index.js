@@ -61,13 +61,21 @@ function setupOnNotification() {
     },
     false
   );
-  FCM.getInitialPushPayload().then((payload) => {
-    addToLog(
-      "<p>Initial Payload</p><pre>" +
-        JSON.stringify(payload, null, 2) +
-        "</pre>"
-    );
-  });
+  FCM.getInitialPushPayload()
+    .then((payload) => {
+      addToLog(
+        "<p>Initial Payload</p><pre>" +
+          JSON.stringify(payload, null, 2) +
+          "</pre>"
+      );
+    })
+    .catch((error) => {
+      addToLog(
+        "<p>Initial Payload Error</p><pre>" +
+          JSON.stringify(error, null, 2) +
+          "</pre>"
+      );
+    });
 }
 
 function logFCMToken() {
