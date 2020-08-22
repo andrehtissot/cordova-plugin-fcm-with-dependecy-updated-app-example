@@ -114,6 +114,18 @@ function setupClearAllNotificationsButton() {
   );
 }
 
+function setupClearAllNotificationsButton() {
+  document.getElementById("delete-instance-id").addEventListener(
+    "click",
+    function () {
+      FCM.deleteInstanceId().catch(function (error) {
+        alert(error);
+      });
+    },
+    false
+  );
+}
+
 function waitForPermission(callback) {
   FCM.requestPushPermission()
     .then(function (didIt) {
