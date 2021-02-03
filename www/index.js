@@ -140,7 +140,14 @@ function waitForPermission(callback) {
     });
 }
 
+function logHasPermissionOnStart() {
+  FCM.hasPermission().then(function (hasIt) {
+    addToLog("<p>Started with permission: " + JSON.stringify(hasIt) + "</p>");
+  });
+}
+
 function setupListeners() {
+  logHasPermissionOnStart();
   waitForPermission(function () {
     FCM.createNotificationChannel({
       id: "sound_alert6",
